@@ -1,29 +1,12 @@
 #!/bin/bash
 
 # Do not override here, use DOCKER_NEO4J_XMS and DOCKER_NEO4J_XMX env variables for that.
-DEFAULT_XMS=512 # wrapper_java_initmemory
-DEFAULT_XMX=512 # wrapper_java_maxmemory
-
-if [[ -n $DOCKER_NEO4J_XMS ]]; then
-	NEO4J_XMS=$DOCKER_NEO4J_XMS
-else
-	NEO4J_XMS=$DEFAULT_XMS
-fi
-
-if [[ -n $DOCKER_NEO4J_XMX ]]; then
-	NEO4J_XMX=$DOCKER_NEO4J_XMX
-else
-	NEO4J_XMX=$DEFAULT_XMX
-fi
+: ${DOCKER_NEO4J_XMS:=512} # wrapper_java_initmemory
+: ${DOCKER_NEO4J_XMX:=512} # wrapper_java_maxmemory
 
 # Setting Java Heap Size configuration
-sed -i 's/#wrapper.java.initmemory=512/wrapper.java.initmemory='$NEO4J_XMS'/g' /var/lib/neo4j/conf/neo4j-wrapper.conf
-sed -i 's/#wrapper.java.maxmemory=512/wrapper.java.maxmemory='$NEO4J_XMX'/g' /var/lib/neo4j/conf/neo4j-wrapper.conf
-
-limit=`ulimit -n`
-if [ "$limit" -lt 65536 ]; then
-    ulimit -n 65536;
-fi
+sed -i 's/#wrapper.java.initmemory=512/wrapper.java.initmemory='$DOCKER_NEO4J_XMS'/g' /var/lib/neo4j/conf/neo4j-wrapper.conf
+sed -i 's/#wrapper.java.maxmemory=512/wrapper.java.maxmemory='$DOCKER_NEO4J_XMX'/g' /var/lib/neo4j/conf/neo4j-wrapper.conf
     
 # Start Neo4j
 /var/lib/neo4j/bin/neo4j console
