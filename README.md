@@ -1,6 +1,6 @@
 # docker-neo4j
 
-Latest **Neo4j-2.2.0** release with native memory configuration using docker environment variables.
+Latest **Neo4j-2.2.1** release with native memory configuration using docker environment variables.
 
 ## Environment variables
 
