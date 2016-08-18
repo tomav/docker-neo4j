@@ -5,9 +5,10 @@
 : ${DOCKER_NEO4J_XMX:=512} # wrapper_java_maxmemory
 
 # Setting Java Heap Size configuration
-sed -i 's/#wrapper.java.initmemory=512/wrapper.java.initmemory='$DOCKER_NEO4J_XMS'/g' /var/lib/neo4j/conf/neo4j-wrapper.conf
-sed -i 's/#wrapper.java.maxmemory=512/wrapper.java.maxmemory='$DOCKER_NEO4J_XMX'/g' /var/lib/neo4j/conf/neo4j-wrapper.conf
+sed -i 's/#dbms.memory.heap.initial_size=512/dbms.memory.heap.initial_size='$DOCKER_NEO4J_XMS'/g' /etc/neo4j/neo4j-wrapper.conf
+sed -i 's/#dbms.memory.heap.max_size=512/dbms.memory.heap.max_size='$DOCKER_NEO4J_XMX'/g' /etc/neo4j/neo4j-wrapper.conf
     
 # Start Neo4j
-/var/lib/neo4j/bin/neo4j console
+/etc/init.d/neo4j restart
+tail -f /var/log/neo4j/neo4j.log
 
